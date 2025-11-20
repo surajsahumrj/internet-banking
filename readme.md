@@ -1,240 +1,301 @@
-# SecureBank — Project README
+# **SecureBank — Internet Banking Prototype**
 
-This README follows the ordered sections requested and documents the project's purpose, how to run it locally, configuration, features, and contacts.
-
--- CSV mapping (Order, Heading, Purpose)
-
-1, "Project Title, Tagline, & Badges", "Immediate project identification, status, and stability"
-2, "Short Description", "A concise, one- or two-sentence summary of the project's purpose."
-3, "🚀 Getting Started", "The absolute minimum steps required to run the project."
-4, "⚙️ Prerequisites", "List of required software (Node, Python, PHP, etc.)."
-5, "Installation", "Step-by-step instructions (e.g., cloning, installing dependencies)."
-6, "💡 Features / Functionality", "Detailed breakdown of what the project can do."
-7, "Usage / Examples", "Code snippets or command-line instructions demonstrating key features."
-8, "Configuration", "How to customize settings (e.g., environment variables, config files)."
-9, "🛣️ Roadmap", "Future plans, features currently under development."
-10, "🤝 Contributing", "How others can help (brings users to the CONTRIBUTING.md)."
-11, "🛡️ License", "Statement of the project's legal terms (LICENSE file)."
-12, "Credits / Acknowledgements", "Thanking major contributors or referencing third-party sources."
-13, "❓ Contact", "Where to find help or report issues."
+A lightweight PHP/MySQL internet-banking prototype featuring authentication, role-based dashboards (Admin, Staff, Client), account management, transactions, and a unified modern design system.
+Built for **learning, demos, and academic projects** — not production deployment.
 
 ---
 
-## 1) Project Title, Tagline, & Badges
+## **📁 Project Structure**
 
-**SecureBank** — Lightweight Internet Banking Prototype
-
-Tagline: "A simple, role-based PHP/MySQL internet-banking prototype for learning and internal demos."
-
-Status: `Prototype` • Stability: `Development`
-
-Badges:
-
-- Build / Status: (local) no CI configured
-- License: MIT (see `LICENSE`)
-
-Repository root: `c:\Xampp\htdocs\securebank` (local dev path in this workspace)
-
-Folder snapshot:
+The project follows a clear modular layout.
+Below is a condensed and readable tree — based on your actual file paths:
 
 ```
-./
-├─ admin/                 # Admin pages and reports
-├─ staff/                 # Staff pages (client onboarding, processing)
-├─ client/                # Client-facing pages
-├─ assets/                # CSS, JS, images
-├─ config/                # DB config, settings
-├─ database/              # SQL schema and seeds
-├─ includes/              # Shared headers, footers, functions, sessions
-├─ tools/                 # Maintenance scripts
-├─ login.php
-├─ signup.php
-├─ forgot_password.php
-├─ reset_password.php
-└─ readme.md
-```
-
----
-
-## 2) Short Description
-
-SecureBank is a PHP + MySQL internet banking prototype demonstrating role-based pages (Admin, Staff, Client), authentication, account management, and basic transaction flows. It is intended for local development, demos, and learning rather than production use.
-
----
-
-## 3) 🚀 Getting Started (minimum)
-
-Quickest steps to run locally (assumes Windows + XAMPP):
-
-1. Ensure Apache + MySQL are running (via XAMPP Control Panel).
-2. Place the project in your webroot (e.g., `C:\xampp\htdocs\securebank`).
-3. Create a MySQL database (e.g., `securebank`) and import `database/securebank.sql` (and optionally `generatedseeds.sql`).
-4. Update DB credentials in `config/db_config.php`.
-5. Open `http://localhost/securebank/` in your browser.
-
-That's the absolute minimum — see Installation for more detail.
-
----
-
-## 4) ⚙️ Prerequisites
-
-- PHP 7.4+ (or PHP 8.x) with mysqli enabled
-- MySQL / MariaDB
-- XAMPP / WAMP (recommended for Windows local dev)
-- A modern browser (Chrome, Firefox, Edge)
-
-Optional but helpful:
-
-- Composer (if you add third-party PHP packages later)
-- A local SMTP tester (MailHog, Mailtrap) to receive password-reset emails
-
----
-
-## 5) Installation
-
-Steps to set up locally (PowerShell shown for Windows):
-
-```powershell
-# Clone (if remote repo)
-git clone https://github.com/<owner>/internet-banking.git
-cd internet-banking
-
-# Move to XAMPP htdocs, or clone directly into it
-# Copy files to C:\xampp\htdocs\securebank
-```
-
-Database import (phpMyAdmin or CLI):
-
-```powershell
-# CLI example
-mysql -u root -p securebank < "C:\path\to\securebank\database\securebank.sql"
-mysql -u root -p securebank < "C:\path\to\securebank\database\generatedseeds.sql"
-```
-
-Edit `config/db_config.php` and set your DB host, user, password, and database name.
-
-Start Apache and MySQL from XAMPP and open `http://localhost/securebank/`.
-
-Test accounts (development only):
-
-- Admin email: `admin@securebank.com` — password: `securebank`
-- Default (clients & staff) password for seeded users: `password`
-
-> IMPORTANT: Change or delete these test credentials in any shared/staging environment.
-
----
-
-## 6) 💡 Features / Functionality
-
-- Role-based pages and navigation for Admin, Staff and Client
-- User registration (`signup.php`), login/logout, and sessions
-- Forgot-password flow:
-  - `forgot_password.php` generates a secure token and stores it in `password_resets` and (in local/dev) logs a reset link.
-  - `reset_password.php` validates the token, enforces password rules, and updates the `users` table.
-- Admin pages for user/account management (under `admin/`)
-- Staff pages for onboarding and transaction processing (under `staff/`)
-- Client portal for account summaries and transfers (under `client/`)
-- Utilities in `tools/` for database fixes and password migrations
-
----
-
-## 7) Usage / Examples
-
-Login via `login.php` using seeded accounts or newly created users.
-
-Example: Register a new client
-
-1. Open `signup.php` and submit registration details.
-2. Then log in via `login.php` with your email and password.
-
-Password reset test (local):
-
-1. Open `forgot_password.php`, enter an existing user's email.
-2. Check your PHP error log or local SMTP tester for the reset link.
-3. Open the link (`reset_password.php?token=...`) and set a new password.
-
-Programmatic sample — DB connection via `config/db_config.php` (pseudo):
-
-```php
-<?php
-require_once __DIR__ . '/config/db_config.php';
-$conn = connectDB();
-// Use prepared statements for queries
-?>
+SecureBank/
+├── admin/                    # Admin dashboard, user mgmt, accounts, reports
+│   ├── add_user.php
+│   ├── client_accounts.php
+│   ├── dashboard.php
+│   ├── financial_reports.php
+│   ├── manage_account_types.php
+│   ├── manage_clients.php
+│   ├── manage_loans.php
+│   ├── manage_users.php
+│   ├── process_transaction.php
+│   ├── system_settings.php
+│   ├── transactions_engine.php
+│   └── user_details.php
+│
+├── staff/                    # Staff portal — operations & processing
+│   ├── add_client.php
+│   ├── balance_enquiry.php
+│   ├── client_details.php
+│   ├── dashboard.php
+│   ├── financial_reporting.php
+│   ├── manage_clients.php
+│   ├── manage_loans.php
+│   ├── open_account.php
+│   ├── pending_accounts.php
+│   ├── process_transaction.php
+│   └── view_transactions.php
+│
+├── client/                   # Client-facing portal
+│   ├── accounts.php
+│   ├── change_password.php
+│   ├── dashboard.php
+│   ├── deposit_funds.php
+│   ├── loan_application.php
+│   ├── profile.php
+│   ├── transaction_history.php
+│   ├── transfer_funds.php
+│   └── withdrawal_funds.php
+│
+├── assets/
+│   ├── css/
+│   ├── img/
+│   └── js/
+│
+├── config/                   # DB config & app settings
+│   ├── db_config.php
+│   └── settings.php
+│
+├── database/                 # SQL schema & seed data
+│   ├── securebank.sql
+│   └── generatedseeds.sql
+│
+├── includes/                 # Shared templates & utilities
+│   ├── header.php
+│   ├── footer.php
+│   ├── functions.php
+│   ├── sessions.php
+│   ├── contact.php
+│   ├── privacy.php
+│   └── terms.php
+│
+├── overview.md               # Design system document (local) :contentReference[oaicite:1]{index=1}
+├── login.php
+├── signup.php
+├── forgot_password.php
+├── reset_password.php
+├── logout.php
+└── index.php
 ```
 
 ---
 
-## 8) Configuration
+## **🔍 Short Description**
 
-Key configuration files:
+SecureBank showcases a complete role-based banking workflow implemented in PHP and MySQL.
+Core features include:
 
-- `config/db_config.php` — database connection function `connectDB()`.
-- `config/settings.php` — general settings (if present).
-
-For local development you can:
-
-- Edit `config/db_config.php` with DB credentials.
-- Add a local `.env` or move credentials out of the codebase when moving to staging/production.
-
-Security tips:
-
-- In production, use environment variables (Apache vhost or system env) instead of hard-coded credentials.
-- Use HTTPS and secure/HTTP-only cookies.
-- Disable verbose error display in `php.ini` and log errors to files.
+* User authentication & password reset flow
+* Admin dashboard for managing users, loans, and transactions
+* Staff portal for onboarding, processing, and account operations
+* Client dashboard for balances, transfers, deposits, and withdrawals
+* Clean, modern UI based on a consistent design system
 
 ---
 
-## 9) 🛣️ Roadmap
+## **🚀 Getting Started (Essential Minimum)**
 
-Planned improvements and ideas:
+1. Install **XAMPP** (Apache + MySQL).
+2. Place the project in:
 
-- Add automated tests (PHPUnit) and basic CI
-- Replace homegrown auth helpers with a well-tested library
-- Add granular audit logging for transactions
-- Add rate limiting and CAPTCHA to `forgot_password.php` to prevent abuse
-- Create a public component library (CSS/JS) and a Figma file
+```
+C:\xampp\htdocs\securebank
+```
 
----
+3. Create a database named:
 
-## 10) 🤝 Contributing
+```
+securebank
+```
 
-Contributions are welcome. Suggested workflow:
+4. Import:
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feat/your-feature`.
-3. Add tests or manual verification steps.
-4. Open a pull request describing your change.
+```
+database/securebank.sql
+database/generatedseeds.sql
+```
 
-Please follow these guidelines:
+5. Update DB credentials in:
 
-- Keep security in mind (do not check in secrets).
-- Use prepared statements for DB access and validate inputs.
+```
+config/db_config.php
+```
 
-Consider adding a `CONTRIBUTING.md` for detailed contribution rules.
+6. Start Apache + MySQL → visit:
 
----
-
-## 11) 🛡️ License
-
-This project uses the MIT License. See `LICENSE` in the repository root for full details.
-
----
-
-## 12) Credits / Acknowledgements
-
-- Project scaffold and initial pages by the SecureBank Development Team (internal prototype).
-- Third-party references: PHP, MySQL, XAMPP.
+```
+http://localhost/securebank/
+```
 
 ---
 
-## 13) ❓ Contact
+## **⚙️ Prerequisites**
 
-Problems, questions, or security issues:
+* PHP 7.4+ / PHP 8.x
+* MySQL or MariaDB
+* Apache (bundled with XAMPP/WAMP)
+* Browser: Chrome / Firefox / Edge
 
-- Open an issue in this repository.
-- Contact the project maintainer or team lead (check your team docs).
+Optional:
+
+* Composer
+* MailHog / Mailtrap for password-reset email capture
+* VS Code + PHP extensions
 
 ---
 
-End of README — last updated: 2025-11-21
+## **🖥️ Modern Design System (Summary)**
+
+Full documentation lives in `overview.md` .
+
+Key principles:
+
+* **8px spacing grid** for consistent layout
+* **System UI font stack** for performance
+* **Full semantic color palette** (Primary Blue, Success Green, Danger Red, etc.)
+* **Clear typography hierarchy** (12px → 36px)
+* **Responsive breakpoints** for tablet/mobile
+* **Components:**
+
+  * Buttons (Primary, Secondary, Tertiary, Logout, View)
+  * Form system (labels, inputs, messages, validation)
+  * Widgets, KPI Cards, Tables, Status Badges
+  * Header / Footer / Navigation
+
+The entire UI is intentionally clean, flat, and enterprise-friendly.
+
+---
+
+## **💡 Features**
+
+### **Authentication**
+
+* Login / Signup
+* Secure password hashing
+* Forgot password + email token flow
+* Session-based access control
+
+### **Admin**
+
+* Manage users, accounts, loans, transactions
+* System settings
+* Financial reports
+* Dashboard KPIs
+
+### **Staff**
+
+* Client onboarding
+* Account opening
+* Loan management
+* Transaction processing
+* Activity reports
+
+### **Client**
+
+* View account balances
+* Transfer funds
+* Deposit / withdraw
+* Loan applications
+* Transaction history
+
+---
+
+## **📦 Installation (Full)**
+
+```bash
+# If cloning from GitHub
+git clone https://github.com/<your-repo>/securebank.git
+cd securebank
+```
+
+Import SQL schema:
+
+```bash
+mysql -u root -p securebank < database/securebank.sql
+mysql -u root -p securebank < database/generatedseeds.sql
+```
+
+Edit DB credentials:
+
+```
+config/db_config.php
+```
+
+Start XAMPP → Apache + MySQL → visit:
+
+```
+http://localhost/securebank/
+```
+
+---
+
+## **📘 Usage Examples**
+
+### Test Admin Login
+
+```
+admin@securebank.com
+Password: securebank
+```
+
+### Test Client/Staff Accounts
+
+```
+Password: password
+```
+
+### Password Reset
+
+1. Open `forgot_password.php`
+2. Enter registered email
+3. Grab reset link from mail logs
+4. Reset password via token
+
+---
+
+## **⚙️ Configuration Overview**
+
+Main config files:
+
+| File                    | Purpose                      |
+| ----------------------- | ---------------------------- |
+| `config/db_config.php`  | Database connection settings |
+| `config/settings.php`   | App-level settings           |
+| `includes/sessions.php` | Session handler              |
+| `.env` (optional)       | Recommended for credentials  |
+
+Security guidelines:
+
+* Never deploy with test credentials
+* Use HTTPS in real environments
+* Disable display_errors in production
+
+---
+
+## **🛣️ Roadmap**
+
+* Dark-mode support
+* Modal + dropdown component library
+* Full Figma design kit
+* API layer for mobile apps
+* Audit logging & security hardening
+* PHPUnit tests + CI workflows
+
+---
+
+## **🤝 Contributing Guidelines**
+
+1. Fork → create feature branch
+2. Commit with clear messages
+3. Open PR with description
+4. Follow coding style + security rules
+
+---
+
+## **🛡️ License**
+
+This project uses the **MIT License**.
+See the `LICENSE` file for details.
