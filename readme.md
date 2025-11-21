@@ -207,7 +207,7 @@ The entire UI is intentionally clean, flat, and enterprise-friendly.
 
 ```bash
 # If cloning from GitHub
-git clone https://github.com/<your-repo>/securebank.git
+git clone https://github.com/surajsahumrj/internetbanking.git
 cd securebank
 ```
 
